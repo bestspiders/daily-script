@@ -39,6 +39,7 @@ last_time = 2018-09-21
 2018-09-21替换成当天日期
 ```
 python send_log_zabbix.py -p /usr/local/tomcat/logs -t 300 -c jdbc,exception -k jdbc_key,exception_key -r 10051 -s 172.16.1.1 -l host_name
+```
 参数
 ```
   -h, --help            show this help message and exit
