@@ -1,5 +1,5 @@
-#bound_symbol_unzip.py <br>
-**Python ENV:**2.7+ <br>
+# bound_symbol_unzip.py <br>
+**Python ENV:** 2.7+ <br>
 针对日期格式清理:catalina.2018-09-21.out <br>
 使用例子: <br>
 ```
@@ -11,11 +11,11 @@ python bound_symbol_unzip.py -t 3 -l 11 -p /usr/local/tomcat/logs -d 1
 -d : 源文件保留天数 (距离今天的时间) <br>
 -p : 压缩的目录 <br>
 
-#old_bound_symbol_unzip.py <br>
+# old_bound_symbol_unzip.py <br>
 **Python ENV:** 2.4+ <br>
 同上，但是可以适用比较老的系统 <br>
 参数同上解释<br>
-#no_bound_symbol_unzip.py <br>
+# no_bound_symbol_unzip.py <br>
 **Python ENV:** 2.7+ <br>
 针对日期格式清理:catalina.20180921.out <br>
 使用例子: <br>
@@ -24,7 +24,7 @@ python bound_symbol_unzip.py -t 3 -l 11 -p /usr/local/tomcat/logs -d 1
 ```
 参数同上解释<br>
 
-#send_log_zabbix.py <br>
+# send_log_zabbix.py <br>
 针对tomcat当天日志关键词检查报警<br>
 
 使用例子<br>
