@@ -57,3 +57,35 @@ python send_log_zabbix.py -p /usr/local/tomcat/logs -t 300 -c jdbc,exception -k 
                         local host name
 
 ```
+
+# url_monitor.py <br>
+
+env:Python2.4+<br>
+
+针对指定url监控<br>
+
+例子<br>
+
+```
+python /nas/nas_log/wangxin/url_monitor.py -r http://192.168.1.2:9999 -u http://222.222.222.222/index.html -k monitor_index -p 10051 -s 10.200.22.22 -l 0.0.0.0 -t 10
+```
+
+参数<br>
+
+```
+  -h, --help            show this help message and exit
+  -u REQ_URL, --req_url=REQ_URL
+                        requests url
+  -t TIME_OUT, --time_out=TIME_OUT
+                        load web time out
+  -k KEY_LIST, --key_list=KEY_LIST
+                        server key list
+  -p PORT, --port=PORT  server port
+  -s SERVER_HOST, --server_host=SERVER_HOST
+                        server host ip
+  -l HOST_NAME, --host_name=HOST_NAME
+                        local host name
+  -r PROXY_IP, --proxy_ip=PROXY_IP
+                        proxy ip
+```
+
