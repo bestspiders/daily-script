@@ -89,3 +89,8 @@ python /nas/nas_log/wangxin/url_monitor.py -r http://192.168.1.2:9999 -u http://
                         proxy ip
 ```
 
+TIME_OUT是页面超时时间
+
+REQ_URL是监控的页面
+
+如果需要代理可以加PROXY_IP指定代理
