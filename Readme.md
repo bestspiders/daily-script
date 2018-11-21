@@ -94,3 +94,28 @@ TIME_OUT是页面超时时间
 REQ_URL是监控的页面
 
 如果需要代理可以加PROXY_IP指定代理
+
+# sss_safe.py
+
+env:Python2.4+<br>
+
+修改nginx,apache,ssh版本号<br>
+
+例子<br>
+
+```
+[root@xxxxx]# ls /usr/local/
+apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  man  nginx  sbin  share  src  tomcat
+[root@xxxxx]# python sss_safe.py -p /usr/local -s
+```
+
+参数<br>
+
+```
+  -p PATH, --path=PATH  alter path
+  -s, --ssh             ssh alter
+```
+
+-p 是需要检测可修改的应用的上层目录
+
+-s 表示修改openssh版本

@@ -19,7 +19,6 @@ for every_day in time_tar_delete:
         if re.search(every_day,every_file):#如果文件路径含时间
             if re.search('\.tar\.gz',every_file):#如果文件路径包含.tar.gz
                 os.remove(os.path.join(log_path,every_file))
-
 for tar_day in time_tar:
     for every_file in all_file:
         if re.search(tar_day,every_file):

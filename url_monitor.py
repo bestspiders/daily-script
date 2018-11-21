@@ -81,7 +81,7 @@ class pyZabbixSender:
 
         response_header = sock.recv(5)
         if not response_header == 'ZBXD\1':
-            err_message = u'Invalid response from server. Malformed data?\n---\n%s\n---\n' % s                                  tr(mydata)
+            err_message = u'Invalid response from server. Malformed data?\n---\n%s\n---\n' % str(mydata)
             sys.stderr.write(err_message)
             return self.RC_ERR_INV_RESP, err_message
 
@@ -91,7 +91,7 @@ class pyZabbixSender:
         response_raw = sock.recv(response_len)
         sock.close()
         response = json.loads(response_raw)
-        match = re.match('^.*failed.+?(\d+).*$', response['info'].lower() if 'info' in respons                                  e else '')
+        match = re.match('^.*failed.+?(\d+).*$', response['info'].lower() if 'info' in response else '')
         if match is None:
             err_message = u'Unable to parse server response - \n%s\n' % str(response)
             sys.stderr.write(err_message)
@@ -100,7 +100,7 @@ class pyZabbixSender:
             fails = int(match.group(1))
             if fails > 0:
                 if self.verbose is True:
-                    err_message = u'Failures reported by zabbix when sending:\n%s\n' % str(myd                                  ata)
+                    err_message = u'Failures reported by zabbix when sending:\n%s\n' % str(mydata)
                     sys.stderr.write(err_message)
                 return self.RC_ERR_FAIL_SEND, response
         return self.RC_OK, response
