@@ -117,6 +117,7 @@ apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  
   -n, --nginx           nginx alter
   -a, --apache          apache alter
   -t, --tomcat          tomcat alter
+  -r, --redis           redis alter
 ```
 
 -p 是需要检测可修改的应用的上层目录
@@ -125,3 +126,4 @@ apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  
 -n 表示修改nginx版本
 -a 表示修改apache版本
 -t 表示修改tomcat版本
+-r 表示修改redis版本

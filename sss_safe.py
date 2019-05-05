@@ -6,6 +6,7 @@ parser.add_option("-s","--ssh",dest="ssh",action="store_true",help="ssh alter")
 parser.add_option("-n","--nginx",dest="nginx",action="store_true",help="nginx alter")
 parser.add_option("-a","--apache",dest="apache",action="store_true",help="apache alter")
 parser.add_option("-t","--tomcat",dest="tomcat",action="store_true",help="tomcat alter")
+parser.add_option("-r","--redis",dest="redis",action="store_true",help="redis alter")
 options,args=parser.parse_args()
 if options.path:
     search_path=options.path
@@ -80,6 +81,27 @@ if options.path:
                             for filename in filenames:
                                 alter_catalina.write(now_dir+'/'+filename)
                         alter_catalina.close()
+        if options.redis:
+            if re.findall('redis\-server',every_file):
+                redis_start_path=os.path.join(search_path,every_file)
+                redis_result=commands.getstatusoutput(redis_start_path+' --version')
+                if redis_result[1]:
+                    shutil.copyfile(redis_start_path,redis_start_path+str(time.time()))
+                    line_list=redis_result[1].split('\n')
+                    print(line_list)
+                    sub_list=line_list[0].split()
+                    redis_options=open(redis_start_path,'r')
+                    redis_content=redis_options.read()
+                    redis_options.close()
+                    redis_version=sub_list[2].split('=')
+                    write_redis=re.sub(redis_version[1],'6'*len(redis_version[1]),redis_content)
+                    write_redis=re.sub('Redis','fucku',write_redis)
+                    os.remove(redis_start_path)
+                    new_redis=open(redis_start_path,'w')
+                    new_redis.write(write_redis)
+                    new_redis.close()
+                    os.system('chmod 755 '+redis_start_path)
+
 if options.ssh:
     if os.path.exists('/usr/bin/ssh'):
         ssh_result=commands.getstatusoutput('/usr/bin/ssh -V') 
