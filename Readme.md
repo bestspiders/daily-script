@@ -107,6 +107,9 @@ env:Python2.6+<br>
 [root@xxxxx]# ls /usr/local/
 apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  man  nginx  sbin  share  src  tomcat
 [root@xxxxx]# python sss_safe.py -p /usr/local -a -t -n
+[root@xxxxx]# ls /usr/bin
+redis-server
+[root@xxxxx]# python sss_safe.py -p /usr/bin -r
 ```
 
 参数<br>
@@ -120,7 +123,7 @@ apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  
   -r, --redis           redis alter
 ```
 
--p 是需要检测可修改的应用的上层目录
+-p 是需要检测可修改的应用的上层目录.(如果是修改redis，需为redis-server上层路径)
 
 -s 表示修改openssh版本
 -n 表示修改nginx版本
