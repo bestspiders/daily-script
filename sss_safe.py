@@ -1,48 +1,85 @@
 #-*- coding:utf-8 -*-
-import os,re,commands,time,shutil,optparse
+import os,re,commands,time,zipfile,shutil,optparse
 parser=optparse.OptionParser()
 parser.add_option("-p","--path",dest="path",help="alter path")
 parser.add_option("-s","--ssh",dest="ssh",action="store_true",help="ssh alter")
+parser.add_option("-n","--nginx",dest="nginx",action="store_true",help="nginx alter")
+parser.add_option("-a","--apache",dest="apache",action="store_true",help="apache alter")
+parser.add_option("-t","--tomcat",dest="tomcat",action="store_true",help="tomcat alter")
 options,args=parser.parse_args()
-search_path=options.path
-file_list=os.listdir(search_path)
-if search_path:
+if options.path:
+    search_path=options.path
+    file_list=os.listdir(search_path)
     for every_file in file_list:
-        if re.findall('nginx',every_file):#判断是否包含nginx字符
-            if os.path.exists(os.path.join(search_path,every_file)):
-                nginx_path=os.path.join(search_path,every_file,'sbin/nginx')
-                result=commands.getstatusoutput(nginx_path+' -v')
-                if result[1]:
-                    line_list=result[1].split('\n')
-                    sub_list=line_list[0].split()#分割输出内容的第一行
-                    shutil.copyfile(nginx_path,nginx_path+str(time.time()))
-                    nginx_options=open(nginx_path,'r')
-                    nginx_content=nginx_options.read()
-                    nginx_options.close()
-                    os.remove(nginx_path)
-                    write_nginx=re.sub(sub_list[2],'6'*len(sub_list[2]),nginx_content)
-                    new_nginx=open(nginx_path,'w')
-                    new_nginx.write(write_nginx)
-                    new_nginx.close()
-                    os.system('chmod 755 '+nginx_path)
-        if re.findall('apache',every_file):
-            if os.path.exists(os.path.join(search_path,every_file)):
-                apache_path=os.path.join(search_path,every_file,'bin/httpd')
-                apache_result=commands.getstatusoutput(apache_path+' -v')
-                if apache_result[1]:
-                    line_list=apache_result[1].split('\n')
-                    sub_list=line_list[0].split()
-                    shutil.copyfile(apache_path,apache_path+str(time.time()))
-                    apache_options=open(apache_path,'r')
-                    apache_content=apache_options.read()
-                    apache_options.close()
-                    os.remove(apache_path)
-                    write_apache=re.sub(sub_list[2],'6'*len(sub_list[2]),apache_content)
-                    new_apache=open(apache_path,'w')
-                    new_apache.write(write_apache)
-                    new_apache.close()
-                    os.system('chmod 755 '+apache_path)
-
+        if os.path.isdir(os.path.join(search_path,every_file)):
+            if options.nginx:
+                if re.findall('nginx',every_file):#判断是否包含nginx字符
+                    if os.path.exists(os.path.join(search_path,every_file)):
+                        nginx_path=os.path.join(search_path,every_file,'sbin/nginx')
+                        result=commands.getstatusoutput(nginx_path+' -v')
+                        if result[1]:
+                            line_list=result[1].split('\n')
+                            sub_list=line_list[0].split()#分割输出内容的第一行
+                            shutil.copyfile(nginx_path,nginx_path+str(time.time()))
+                            nginx_options=open(nginx_path,'r')
+                            nginx_content=nginx_options.read()
+                            nginx_options.close()
+                            os.remove(nginx_path)
+                            write_nginx=re.sub(sub_list[2],'6'*len(sub_list[2]),nginx_content)
+                            new_nginx=open(nginx_path,'w')
+                            new_nginx.write(write_nginx)
+                            new_nginx.close()
+                            os.system('chmod 755 '+nginx_path)
+            if options.apache:
+                if re.findall('apache',every_file):
+                    if os.path.exists(os.path.join(search_path,every_file)):
+                        apache_path=os.path.join(search_path,every_file,'bin/httpd')
+                        apache_result=commands.getstatusoutput(apache_path+' -v')
+                        print(apache_result)
+                        if apache_result[1]:
+                            line_list=apache_result[1].split('\n')
+                            sub_list=line_list[0].split()
+                            shutil.copyfile(apache_path,apache_path+str(time.time()))
+                            apache_options=open(apache_path,'r')
+                            apache_content=apache_options.read()
+                            apache_options.close()
+                            os.remove(apache_path)
+                            write_apache=re.sub(sub_list[2],'6'*len(sub_list[2]),apache_content)
+                            new_apache=open(apache_path,'w')
+                            new_apache.write(write_apache)
+                            new_apache.close()
+                            os.system('chmod 755 '+apache_path)
+            if options.tomcat:
+                if re.findall('tomcat',every_file):
+                    if os.path.exists(os.path.join(search_path,every_file)):
+                        root_path=os.path.join(search_path,every_file,'lib')
+                        os.chdir(root_path)
+                        z = zipfile.ZipFile(os.path.join(root_path,"catalina.jar"),'r')
+                        z.extractall()
+                        server_info_options=z.open('org/apache/catalina/util/ServerInfo.properties','r')
+                        raw_server_info=server_info_options.read()
+                        server_info_options.close()
+                        z.close()
+                        catalina_options=open(os.path.join(root_path,'org/apache/catalina/util/ServerInfo.properties'),'w')
+                        for every_line in raw_server_info.split('\n'):
+                            if re.findall('^server\.info',every_line):
+                                catalina_options.write('server.info=miguserver\n')
+                            elif re.findall('^server.number',every_line):
+                                catalina_options.write('server.number=0.0.0.0\n')
+                            else:
+                                catalina_options.write(every_line+'\n')
+                        catalina_options.close()
+                        os.rename(os.path.join(root_path,"catalina.jar"),os.path.join(root_path,"catalina.jar"+str(time.time())))
+                        alter_catalina=zipfile.ZipFile("/tmp/catalina.jar",'w')
+                        for path,dirnames,filenames in os.walk(os.path.join(root_path,'org')):
+                            now_dir=re.sub('^'+root_path+'/','',path)
+                            for filename in filenames:
+                                alter_catalina.write(now_dir+'/'+filename)
+                        for path,dirnames,filenames in os.walk(os.path.join(root_path,'META-INF')):
+                            now_dir=re.sub('^'+root_path+'/','',path)
+                            for filename in filenames:
+                                alter_catalina.write(now_dir+'/'+filename)
+                        alter_catalina.close()
 if options.ssh:
     if os.path.exists('/usr/bin/ssh'):
         ssh_result=commands.getstatusoutput('/usr/bin/ssh -V') 

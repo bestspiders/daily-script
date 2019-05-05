@@ -97,16 +97,16 @@ REQ_URL是监控的页面
 
 # sss_safe.py
 
-env:Python2.4+<br>
+env:Python2.6+<br>
 
-修改nginx,apache,ssh版本号<br>
+修改nginx,apache,tomcat,ssh版本号<br>
 
 例子<br>
 
 ```
 [root@xxxxx]# ls /usr/local/
 apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  man  nginx  sbin  share  src  tomcat
-[root@xxxxx]# python sss_safe.py -p /usr/local -s
+[root@xxxxx]# python sss_safe.py -p /usr/local -a -t -n
 ```
 
 参数<br>
@@ -114,8 +114,14 @@ apache  bin  etc  games  include  info  jdk1.8.0_162  lib  lib64  libexec  lua  
 ```
   -p PATH, --path=PATH  alter path
   -s, --ssh             ssh alter
+  -n, --nginx           nginx alter
+  -a, --apache          apache alter
+  -t, --tomcat          tomcat alter
 ```
 
 -p 是需要检测可修改的应用的上层目录
 
 -s 表示修改openssh版本
+-n 表示修改nginx版本
+-a 表示修改apache版本
+-t 表示修改tomcat版本
